@@ -63,6 +63,7 @@ def callback():
     template_context = {
         'client_id': client_id,
         'client_secret': client_secret,
+        'callback_url': callback_url,
         'access_token': token['access_token'],
         'refresh_token': token['refresh_token'],
         'instance_url': token['instance_url'],
