@@ -12,9 +12,17 @@ def create_app():
 
 app = create_app()
 
+def get_callback_url(request):
+    """ Ensure that if running on Heroku, https is used """
+    if request.base_url.find('herokuapp.com') == -1:
+        base_url = request.base_url
+    else:
+        base_url = request.base_url.replace('http:', 'https:')
+    return base_url + 'callback'
+
 @app.route('/')
 def home():
-    return render_template('index.html', callback_url = request.base_url + 'callback')
+    return render_template('index.html', callback_url = get_callback_url(request))
 
 @app.route('/refresh_token')
 def refresh_token():
@@ -25,7 +33,7 @@ def refresh_token():
     client_secret = request.args.get('client_secret')
     if not client_secret:
         return 'ERROR: You must pass a client_secret'
-    callback_url = request.host_url + 'callback'
+    callback_url = get_callback_url(request)
     sandbox = request.args.get('sandbox', False) == 'true'
     scope = 'web full refresh_token'
     
@@ -43,7 +51,7 @@ def refresh_token():
 def callback():
     client_id = request.cookies.get('client_id')
     client_secret = request.cookies.get('client_secret')
-    callback_url = request.host_url + 'callback'
+    callback_url = get_callback_url(request)
     sandbox = request.cookies.get('sandbox') == 'true'
     scope = 'web full refresh_token'
 
