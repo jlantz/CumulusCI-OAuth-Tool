@@ -2,43 +2,56 @@
 {% block title %}CumulusCI OAuth Tool{% endblock %}
 
 {% block content %}
+
+  <a href="https://github.com/jlantz/CumulusCI-OAuth-Tool"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
   <div class="jumbotron"><h1>CumulusCI OAuth Tool</h1></div>
 
-  <h1>What is this for?</h1>
+  <div class="container">
+    <div class="row">
+      <h1>What is this for?</h1>
 
-  <p><a href="https://github.com/SalesforceFoundation/CumulusCI">CumulusCI</a> is a set of reusable build and automation scripts for managed package development on the Salesforce1 Platform.  One component of CumulusCI requires the use of Selenium to upload a beta managed package from the packaging org for which there is currently no API.  This tool was built to make it easier to get an OAuth refresh token using your own Connected App so you control the security of the token.</p>
+      <p><a href="https://github.com/SalesforceFoundation/CumulusCI">CumulusCI</a> is a set of reusable build and automation scripts for managed package development on the Salesforce1 Platform.  One component of CumulusCI requires the use of Selenium to upload a beta managed package from the packaging org for which there is currently no API.  This tool was built to make it easier to get an OAuth refresh token using your own Connected App so you control the security of the token.</p>
 
-  <h1>How to use</h1>
+      <h1>How to use</h1>
 
-  <div class="alert alert-warning">
-    This application does not store your client_id and client_secret.  They are set in cookies at the start of the OAuth request so the cookies are available to the callback.  The callback deletes the cookies when the page loads.  You should be able to confirm that everything is deleted by checking the cookies in your browser.
+      <div class="alert alert-warning">
+        This application does not store your client_id and client_secret.  They are set in cookies at the start of the OAuth request so the cookies are available to the callback.  The callback deletes the cookies when the page loads.  You should be able to confirm that everything is deleted by checking the cookies in your browser.
+      </div>
+
+      <h2>Creating the Connected App</h2>
+      <p>The first step is to create a Connected App in a Salesforce instance:</p>
+      <ol>
+        <li>Go to Setup -&gt; Create -&gt; Applications</li>
+        <li>Click "New" under Connected Apps</li>
+        <li>Enter a unique value for the Name and API Name field</li>
+        <li>Enter a Contact Email</li>
+        <li>Check "Enable OAuth Settings"</li>
+        <li>Set the Callback URL to <strong>{{ callback_url }}</strong></li>
+        <li>Enable the scopes: full, refresh_token, and web</li>
+        <li>Save the Connected App</li>
+        <li>Click the Manage button, then click Edit</li>
+        <li>Change "IP Relaxation" to "Relax IP restrictions"</li>
+        <li>Record the client_id (Consumer Key) and the client_secret (Consumer Secret)</li>
+      </ol>
+
+      <div class="alert alert-info">If you need to setup multiple packaging orgs, you can reuse this same connected app for the other orgs</div>
+
+      <h2>Get the Refresh Token</h2>
+
+      <div class="alert alert-warning">On the Grant Access page, be sure to verify your Salesforce username.  If you are logged into multiple orgs, you might be prompted to grant access to the wrong org</div>
+
+      <ol>
+        <li>Fill in the client_id and client_secret values in the form below click Get Refresh Token</li>
+        <li>You will be prompted to authorize your app access to your org, click Allow</li>
+        <li>The resuling page will show you the environment variables you'll need to setup for CumulusCI</li>
+      </ol>
+
+      <form action="/refresh_token">
+        <input name="client_id" type="text" placeholder="client_id" />
+        <input name="client_secret" type="text" placeholder="client_secret" />
+        <input type="submit" value="Get Refresh Token" />
+      </form>
+    </div>
   </div>
-
-  <h2>Creating the Connected App</h2>
-  <p>The first step is to create a Connected App in a Salesforce instance:</p>
-  <ol>
-    <li>Go to Setup -&gt; Create -&gt; Applications</li>
-    <li>Click "New" under Connected Apps</li>
-    <li>Enter a unique value for the Name and API Name field</li>
-    <li>Enter a Contact Email</li>
-    <li>Check "Enable OAuth Settings"</li>
-    <li>Set the Callback URL to <strong>{{ callback_url }}</strong></li>
-    <li>Enable the scopes: full, refresh_token, and web</li>
-    <li>Save the Connected App</li>
-    <li>Record the client_id (Consumer Key) and the client_secret (Consumer Secret)</li>
-  </ol>
-
-  <h2>Get the Refresh Token</h2>
-  <ol>
-    <li>Fill in the client_id and client_secret values in the form below click Get Refresh Token</li>
-    <li>You will be prompted to authorize your app access to your org, click Allow</li>
-    <li>The resuling page will show you the environment variables you'll need to setup for CumulusCI</li>
-  </ol>
-
-  <form action="/refresh_token">
-    <input name="client_id" type="text" placeholder="client_id" />
-    <input name="client_secret" type="text" placeholder="client_secret" />
-    <input type="submit" value="Get Refresh Token" />
-  </form>
-    
 {% endblock %}
