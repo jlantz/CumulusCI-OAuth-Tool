@@ -14,11 +14,11 @@ app = create_app()
 
 def get_callback_url(request):
     """ Ensure that if running on Heroku, https is used """
-    if request.base_url.find('herokuapp.com') == -1:
-        base_url = request.base_url
+    if request.host_url.find('herokuapp.com') == -1:
+        host_url = request.host_url
     else:
-        base_url = request.base_url.replace('http:', 'https:')
-    return base_url + 'callback'
+        host_url = request.host_url.replace('http:', 'https:')
+    return host_url + 'callback'
 
 @app.route('/')
 def home():
