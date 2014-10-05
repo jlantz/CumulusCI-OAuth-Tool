@@ -24,17 +24,17 @@ def get_callback_url(request):
 def home():
     return render_template('index.html', callback_url = get_callback_url(request))
 
-@app.route('/refresh_token')
+@app.route('/refresh_token', methods=['POST',])
 def refresh_token():
     # Get arguments from HTTP GET request
-    client_id = request.args.get('client_id')
+    client_id = request.form.get('client_id')
     if not client_id:
         return 'ERROR: You must pass a client_id'
-    client_secret = request.args.get('client_secret')
+    client_secret = request.form.get('client_secret')
     if not client_secret:
         return 'ERROR: You must pass a client_secret'
     callback_url = get_callback_url(request)
-    sandbox = request.args.get('sandbox', False) == 'true'
+    sandbox = request.form.get('sandbox', False) == 'true'
     scope = 'web full refresh_token'
     
     sf = SalesforceOAuth2(client_id, client_secret, callback_url, sandbox=sandbox)

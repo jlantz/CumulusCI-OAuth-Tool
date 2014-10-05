@@ -4,17 +4,23 @@
 {% block content %}
   <div class="jumbotron"><h1>CumulusCI OAuth Tool</h1></div>
 
-  <h1>Success!</h1>
+  <div class="container">
+    <div class="row">
 
-  <p>Use the following environment variables to configure the CumulusCI package_upload.py script.  If you are using Codeship to automate builds, set these environment variables in the Environment section of your project's configuration</p>
+      <h1>Success!</h1>
+
+      <p>Use the following environment variables to configure the CumulusCI package_upload.py script.  If you are using Codeship to automate builds, set these environment variables in the Environment section of your project's configuration</p>
  
-  <pre>
+      <pre>
 OAUTH_CLIENT_ID={{ client_id }}
 OAUTH_CLIENT_SECRET={{ client_secret }}
 OAUTH_CALLBACK_URL={{ callback_url }}
 REFRESH_TOKEN={{ refresh_token }}
 INSTANCE_URL={{ instance_url }}
-  </pre>
+      </pre>
 
-  <p>You can test that the access token works (until it expires) by logging out of your org then going to <a href="{{ instance_url }}/secur/frontdoor.jsp?sid={{ access_token }}">{{ instance_url }}/secur/frontdoor.jsp?sid={{ access_token }}</a></p>
+      <p>You can test that the access token works (until it expires) by logging out of your org then going to <a href="{{ instance_url }}/secur/frontdoor.jsp?sid={{ access_token }}">{{ instance_url }}/secur/frontdoor.jsp?sid={{ access_token }}</a></p>
+    </div>
+  </div>
+
 {% endblock %}

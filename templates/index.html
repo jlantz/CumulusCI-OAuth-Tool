@@ -47,10 +47,16 @@
         <li>The resuling page will show you the environment variables you'll need to setup for CumulusCI</li>
       </ol>
 
-      <form action="/refresh_token">
-        <input name="client_id" type="text" placeholder="client_id" />
-        <input name="client_secret" type="text" placeholder="client_secret" />
-        <input type="submit" value="Get Refresh Token" />
+      <form role="form" action="/refresh_token" method="post">
+        <div class="form-group">
+          <input name="client_id" type="text" class="form-control" placeholder="client_id" />
+        </div>
+        <div class="form-group">
+        <input name="client_secret" type="text" class="form-control" placeholder="client_secret" />
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn btn-primary">Get Refresh Token"</button>
+        </div>
       </form>
     </div>
   </div>
